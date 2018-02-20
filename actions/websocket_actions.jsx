@@ -12,6 +12,7 @@ import {getMe} from 'mattermost-redux/actions/users';
 import {Client4} from 'mattermost-redux/client';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/users';
 import {getMyTeams} from 'mattermost-redux/selectors/entities/teams';
+import {getConfig} from 'mattermost-redux/selectors/entities/general';
 
 import {browserHistory} from 'utils/browser_history';
 import {loadChannelsForCurrentUser} from 'actions/channel_actions.jsx';
@@ -55,11 +56,12 @@ export function initialize() {
     }
 
     // append a port number if one isn't already specified
+    const config = getConfig(getState());
     if (!(/:\d+$/).test(connUrl)) {
         if (connUrl.startsWith('wss:')) {
-            connUrl += ':' + global.window.mm_config.WebsocketSecurePort;
+            connUrl += ':' + config.WebsocketSecurePort;
         } else {
-            connUrl += ':' + global.window.mm_config.WebsocketPort;
+            connUrl += ':' + config.WebsocketPort;
         }
     }
 
